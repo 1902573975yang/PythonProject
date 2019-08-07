@@ -1,2 +1,2 @@
 # PythonProject
-Python Project
+Python 3.6 version
