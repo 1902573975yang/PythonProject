@@ -35,7 +35,7 @@ if __name__ == "__main__":
     testunit.addTest(Baidu("test_case"))
     testunit.addTest(Baidu("test_case2"))
     testunit.addTest(Baidu("closeBrowser"))
-    report_path ="D:\\temp\\result.html"
+    report_path ="../reports"
     fp = open(report_path,"wb")
     report = HTMLTestReport.HTMLTestRunner(stream=fp,title="repo",description="this is desc",tester="yang")
     report.run(testunit)
