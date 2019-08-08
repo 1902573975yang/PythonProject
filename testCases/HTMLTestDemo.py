@@ -14,11 +14,16 @@ class Baidu(unittest.TestCase):
     '''
     Test Report
     '''
+    #每个case都会执行该方法
     def setUp(self):
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(20)
         self.driver.get("https://www.baidu.com")
         pass
+    # 关闭
+    def tearDown(self):
+        self.driver.quit()
+
     def test_case(self):
         print("test_case1")
         pass
@@ -28,15 +33,3 @@ class Baidu(unittest.TestCase):
     def closeBrowser(self):
         print("close")
         pass
-
-if __name__ == "__main__":
-    '''Testing'''
-    testunit = unittest.TestSuite()
-    testunit.addTest(Baidu("test_case"))
-    testunit.addTest(Baidu("test_case2"))
-    testunit.addTest(Baidu("closeBrowser"))
-    report_path ="../reports"
-    fp = open(report_path,"wb")
-    report = HTMLTestReport.HTMLTestRunner(stream=fp,title="repo",description="this is desc",tester="yang")
-    report.run(testunit)
-    fp.close()
