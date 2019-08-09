@@ -3,3 +3,4 @@
 .idea/*
 HTMLTest/__pycache__/
 testCases/__pycache__/
+/reports/movice_*.txt
