@@ -4,10 +4,15 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from  multiprocessing import Pool
 from selenium import webdriver
-import  time
+import time
+import os
 
-
-
+#os.path.abspath(os.path.dirname(__file__))  # 这个方法获取到的是当前文件所在的目录结构
+current_time = time.strftime('%Y_%m_%d_%H_%M_%S',time.localtime(time.time()))
+report_path =os.path.abspath('..') + "/reports/movice_"+current_time+".txt"
+# wb 是写 bytes 模式，不能写str
+print(report_path)
+fp = open(report_path,"w") #encoding='utf-8'
 def openUrl(url):
     chromeOptNew = Options()
     chromeOptNew.add_argument("--headless")
@@ -30,12 +35,17 @@ def openUrl(url):
         for t in content_list:
             try:
                 aObj = t.find_element_by_tag_name("a")
-                print(aObj.text)
+                a_text = aObj.text
+                if len(a_text) != 0 and a_text.find("//"):
+                    fp.write(a_text)
+                    print(a_text)
+                    fp.write("\n")
+                    fp.flush()
             except AttributeError as attr:
-                print(attr)
+                #print(attr)
                 pass
             except NoSuchElementException as nse:
-                print(nse)
+                #print(nse)
                 pass
             finally:
                 pass
@@ -68,11 +78,11 @@ if __name__ == '__main__':
 
         urlList = []
         initI = 0
-        while initI < 10:
+        while initI < 8: #len(aListLength):
             initI += 1  #自增
             tempXpath = "//div[@class='co_content2']//a[" + str(initI) + "]"
             href = chromeDriver.find_element_by_xpath(tempXpath).get_attribute("href")
-            print(href)
+            # print(href)
             # 判断href 是否是 None
             if not(href is None):
                 urlList.append(href)
@@ -82,7 +92,7 @@ if __name__ == '__main__':
         rl  = pool.map(openUrl,urlList)
         pool.close()
         pool.join()
-        print("join")
+        # print("join")
         pass
     except TypeError as e:
         print(e)
@@ -91,3 +101,4 @@ if __name__ == '__main__':
         print("error")
     finally:
         chromeDriver.quit()
+        fp.close()
